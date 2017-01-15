@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.spring.demo.R;
-import com.spring.demo.api.BeanResponseTypeAdapter;
 import com.spring.demo.api.BeanServiceClient;
+import com.spring.demo.api.endpoint.BeanEndPointInterface;
 import com.spring.demo.api.http.HttpManager;
 import com.spring.demo.api.parser.BeanJsonParser;
-import com.spring.demo.api.service.BeanService;
 import com.spring.demo.beans.adapter.BeanAdapterRecyclerView;
 import com.spring.demo.beans.model.Bean;
 import com.spring.demo.beans.service.BeanResponse;
@@ -40,50 +38,34 @@ public class BeanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bean);
 
         beans = new ArrayList<Bean>();
-        /*for (int i = 0; i < 50; i++) {
-            beans.add(new Bean(i, "nombre"+i, "apellido"+i, "dni"+i, "fecha"+i));
-        }*/
-
-        //Call to the service
-        //beans = new ArrayList<Bean>();
 
         beanRecycler = (RecyclerView)findViewById(R.id.beanRecycler);
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         beanRecycler.setLayoutManager(linearLayoutManager);
-
-        //populateData();
-        //populateData2();
-        populate();
-
+        //retrofitPopulate();
+        parserPopulateData();
         adapterRecyclerView = new BeanAdapterRecyclerView(beans, R.layout.listitem_bean);
         beanRecycler.setAdapter(adapterRecyclerView);
     }
 
-    private void populate() {
+    private void httpUrlConnectionPopulate() {
         ConnectWebServiceTask task = new ConnectWebServiceTask();
         task.execute(Constant.URI_BEANS_DEMO);
     }
 
-    private void populateData2() {
-        String content = HttpManager.getData(Constant.URI_BEANS_DEMO);
-        BeanResponse beanResponse = BeanJsonParser.parse(content);
-        beans.clear();
-        beans.addAll(beanResponse.getBeans());
-        adapterRecyclerView.notifyDataSetChanged();
-    }
+    public void retrofitPopulate() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constant.URI_BEANS_DEMO)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        BeanEndPointInterface service = retrofit.create(BeanEndPointInterface.class);
 
-    public void populateData() {
-
-        BeanService service = (new BeanServiceClient()).getService();
         Call<BeanResponse> responseCall = service.getBeans();
         responseCall.enqueue(new Callback<BeanResponse>() {
             @Override
             public void onResponse(Call<BeanResponse> call, Response<BeanResponse> response) {
-                Log.d("onResponse", "onResponse");
-                Log.d("isSuccessful:", "success: "+response.isSuccessful());
                 if (response.isSuccessful()) {
-                    Log.d("Success", "Success");
                     BeanResponse result = response.body();
                     beans.clear();
                     beans.addAll(result.getBeans());
@@ -93,7 +75,28 @@ public class BeanActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BeanResponse> call, Throwable t) {
-                Log.d("Error", "Error");
+                Log.d("Error", t.getMessage());
+            }
+        });
+    }
+
+    public void parserPopulateData() {
+        BeanEndPointInterface service = (new BeanServiceClient()).getService();
+        Call<BeanResponse> responseCall = service.getBeans();
+        responseCall.enqueue(new Callback<BeanResponse>() {
+            @Override
+            public void onResponse(Call<BeanResponse> call, Response<BeanResponse> response) {
+                if (response.isSuccessful()) {
+                    BeanResponse result = response.body();
+                    beans.clear();
+                    beans.addAll(result.getBeans());
+                    adapterRecyclerView.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BeanResponse> call, Throwable t) {
+                Log.d("Error", t.getMessage());
             }
         });
     }
@@ -104,17 +107,14 @@ public class BeanActivity extends AppCompatActivity {
     }
 
 
+    //Connect to the web service using AsyncTask
     public class ConnectWebServiceTask extends AsyncTask<String, String, String> {
-
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
         @Override
         protected String doInBackground(String... params) {
-
             String content = HttpManager.getData(params[0]);
             return content;
         }
@@ -122,13 +122,11 @@ public class BeanActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             BeanResponse beanResponse = BeanJsonParser.parse(result);
             beans.clear();
             beans.addAll(beanResponse.getBeans());
             adapterRecyclerView.notifyDataSetChanged();
+
         }
     }
-
-
 }

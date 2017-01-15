@@ -16,6 +16,8 @@ import java.util.ArrayList;
  */
 
 public class BeanResponseTypeAdapter extends TypeAdapter {
+
+
     @Override
     public void write(JsonWriter out, Object value) throws IOException {
 
@@ -23,16 +25,18 @@ public class BeanResponseTypeAdapter extends TypeAdapter {
 
     @Override
     public Object read(JsonReader reader) throws IOException {
-        Log.d("READ", "READ INFO");
         final BeanResponse response = new BeanResponse();
         ArrayList<Bean> list = new ArrayList<Bean>();
         reader.beginObject();
 
+        reader.nextName();
+        reader.beginArray();
+
         while (reader.hasNext()) {
-            Log.d("COUNT", "COUNT");
             Bean bean = readBean(reader);
             list.add(bean);
         }
+        reader.endArray();
         reader.endObject();
         response.setBeans(list);
         return response;
@@ -40,14 +44,12 @@ public class BeanResponseTypeAdapter extends TypeAdapter {
 
     public Bean readBean(JsonReader reader) throws IOException {
         Bean bean = new Bean();
-        reader.nextName();
         reader.beginObject();
         while (reader.hasNext()) {
             String next = reader.nextName();
             switch (next) {
                 case "idSpringBean":
                     int idSpringBean = reader.nextInt();
-                    Log.d("idSpringID: ", "spring id: " + idSpringBean);
                     bean.setIdSpringBean(idSpringBean);
                     break;
                 case "nombre":

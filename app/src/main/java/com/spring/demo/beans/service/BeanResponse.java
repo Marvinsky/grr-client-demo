@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class BeanResponse {
 
-    ArrayList<Bean> beans = null;
+    ArrayList<Bean> beans = new ArrayList<Bean>();
 
     public ArrayList<Bean> getBeans() {
         return beans;

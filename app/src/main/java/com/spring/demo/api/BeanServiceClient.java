@@ -1,9 +1,8 @@
 package com.spring.demo.api;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.spring.demo.api.service.BeanService;
+import com.spring.demo.api.endpoint.BeanEndPointInterface;
 import com.spring.demo.beans.service.BeanResponse;
 import com.spring.demo.utils.Constant;
 
@@ -18,40 +17,16 @@ public class BeanServiceClient {
     private Retrofit retrofit;
 
     public BeanServiceClient() {
-
+        BeanResponseTypeAdapter adapter = new BeanResponseTypeAdapter();
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(BeanResponse.class, new BeanResponseTypeAdapter())
                 .create();
         retrofit = new Retrofit.Builder().baseUrl(Constant.URI_BEANS_DEMO)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-
-        /*
-        BeanResponseTypeAdapter adapter = new BeanResponseTypeAdapter();
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(BeanResponse.class, adapter)
-                .create();
-        retrofit = new Retrofit.Builder().baseUrl(Constant.URI_BEANS_DEMO)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        */
-
-
-
-        /*
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.URI_BEANS_DEMO)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        */
     }
 
-    public BeanService getService() {
-        return retrofit.create(BeanService.class);
+    public BeanEndPointInterface getService() {
+        return retrofit.create(BeanEndPointInterface.class);
     }
-
 }
