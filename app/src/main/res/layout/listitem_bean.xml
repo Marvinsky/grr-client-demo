@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_listitem"
+    android:layout_marginBottom="@dimen/marginbottom_listitem"
+    >
+
+    <TextView
+        android:id="@+id/lblIdSpringBean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize_high"
+        />
+
+    <TextView
+        android:id="@+id/lblNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize_high"
+        />
+
+    <TextView
+        android:id="@+id/lblApellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize_high"
+        />
+
+    <TextView
+        android:id="@+id/lblDni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textSize="@dimen/textSize_small"
+        />
+
+
+    <TextView
+        android:id="@+id/lblFechaRegistro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textSize="@dimen/textSize_small"
+        />
+
+
+</LinearLayout>
