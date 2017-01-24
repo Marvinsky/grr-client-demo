@@ -1,11 +1,9 @@
-package com.spring.demo.api;
-
-import android.util.Log;
+package com.spring.demo.beans.ws;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.spring.demo.beans.model.Bean;
+import com.spring.demo.model.Bean;
 import com.spring.demo.beans.service.BeanResponse;
 
 import java.io.IOException;

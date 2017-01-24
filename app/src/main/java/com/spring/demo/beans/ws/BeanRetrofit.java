@@ -1,8 +1,7 @@
-package com.spring.demo.api;
+package com.spring.demo.beans.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.spring.demo.api.endpoint.BeanEndPointInterface;
 import com.spring.demo.beans.service.BeanResponse;
 import com.spring.demo.utils.Constant;
 
@@ -13,10 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by mabisrror on 1/14/17.
  */
 
-public class BeanServiceClient {
+public class BeanRetrofit {
     private Retrofit retrofit;
 
-    public BeanServiceClient() {
+    public BeanRetrofit() {
         BeanResponseTypeAdapter adapter = new BeanResponseTypeAdapter();
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(BeanResponse.class, new BeanResponseTypeAdapter())

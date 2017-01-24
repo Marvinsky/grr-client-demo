@@ -8,13 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.spring.demo.R;
-import com.spring.demo.api.BeanServiceClient;
-import com.spring.demo.api.endpoint.BeanEndPointInterface;
+import com.spring.demo.beans.ws.BeanRetrofit;
+import com.spring.demo.beans.ws.BeanEndPointInterface;
 import com.spring.demo.api.http.HttpManager;
 import com.spring.demo.api.parser.BeanJsonParser;
 import com.spring.demo.beans.adapter.BeanAdapterRecyclerView;
-import com.spring.demo.beans.model.Bean;
+import com.spring.demo.model.Bean;
 import com.spring.demo.beans.service.BeanResponse;
+import com.spring.demo.model.Task;
 import com.spring.demo.utils.Constant;
 
 import java.util.ArrayList;
@@ -61,7 +62,9 @@ public class BeanActivity extends AppCompatActivity {
                 .build();
         BeanEndPointInterface service = retrofit.create(BeanEndPointInterface.class);
 
-        Call<BeanResponse> responseCall = service.getBeans();
+        Task task = new Task();
+        task.setNombre("a");
+        Call<BeanResponse> responseCall = service.getBeans(task, "abc");
         responseCall.enqueue(new Callback<BeanResponse>() {
             @Override
             public void onResponse(Call<BeanResponse> call, Response<BeanResponse> response) {
@@ -81,8 +84,10 @@ public class BeanActivity extends AppCompatActivity {
     }
 
     public void parserPopulateData() {
-        BeanEndPointInterface service = (new BeanServiceClient()).getService();
-        Call<BeanResponse> responseCall = service.getBeans();
+        BeanEndPointInterface service = (new BeanRetrofit()).getService();
+        Task task = new Task();
+        task.setNombre("a");
+        Call<BeanResponse> responseCall = service.getBeans(task, "abc");
         responseCall.enqueue(new Callback<BeanResponse>() {
             @Override
             public void onResponse(Call<BeanResponse> call, Response<BeanResponse> response) {

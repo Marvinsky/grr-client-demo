@@ -1,8 +1,6 @@
 package com.spring.demo.beans.service;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import com.spring.demo.beans.model.Bean;
+import com.spring.demo.model.Bean;
 
 import java.util.ArrayList;
 

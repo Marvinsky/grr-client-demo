@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.spring.demo.R;
-import com.spring.demo.beans.model.Bean;
+import com.spring.demo.model.Bean;
 
 import java.util.ArrayList;
 

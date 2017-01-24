@@ -1,6 +1,6 @@
 package com.spring.demo.api.parser;
 
-import com.spring.demo.beans.model.Bean;
+import com.spring.demo.model.Bean;
 import com.spring.demo.beans.service.BeanResponse;
 
 import org.json.JSONArray;
@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by mabisrror on 1/14/17.
